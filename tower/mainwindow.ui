@@ -47,7 +47,8 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -56,9 +57,31 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menutest">
+    <property name="title">
+     <string>test</string>
+    </property>
+   </widget>
+   <addaction name="menutest"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>label</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>376</x>
+     <y>386</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>380</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
