@@ -5,11 +5,14 @@
 #include <QPushButton>
 #include <enemy.h>
 #include "tower.h"
-
+#include <QVector>
 class map : public QWidget{
 public:
     map(QWidget *parent = 0);
     void start();
+    bool gameover();
+    void npcMove();
+    void npcPaint(QPainter & qp);
 public slots:
         void init();
 
@@ -23,13 +26,14 @@ private:
     static const int B_WIDTH = 1920;
     static const int B_HEIGHT = 1080;
     static const int LEN = 1000;
-
+    static const int ENEMY_NUM = 10;
     int x;
     int y;
     int count;
-    int step=0;
+    int step;
     int timeID;
-    enemy npc;
+
+    QVector <enemy> npc;
     tower defenceTower;
 };
 

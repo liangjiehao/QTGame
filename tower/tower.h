@@ -10,7 +10,7 @@ public:
     QImage tow;
     tower();
     bool checkEnemy(enemy & npc);
-    void attack(enemy & npc);
+    void attack(QVector <enemy> & npc);
     void paint(QPainter & qp);
 private:
     static const int power = 50;
