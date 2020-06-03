@@ -19,13 +19,14 @@ SOURCES += \
     enemy.cpp \
     main.cpp \
     mainwindow.cpp \
-    map.cpp
+    map.cpp \
+    tower.cpp
 
 HEADERS += \
-    Tower.h \
     enemy.h \
     mainwindow.h \
-    map.h
+    map.h \
+    tower.h
 
 FORMS += \
     mainwindow.ui

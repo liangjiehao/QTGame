@@ -5,17 +5,13 @@
 #include <QPushButton>
 
 
-map::map(QWidget * parent):QWidget(parent),startButton("开始"),npc(){
+map::map(QWidget * parent):QWidget(parent),startButton("开始"),npc(),defenceTower(){
     setStyleSheet("background-color:white;");
     resize(B_WIDTH, B_HEIGHT);
-    //dot.load("E:\\QT\\QTGame\\tower\\dot.png");
-    //connect(&tower,SIGNAL(clicked),this,SLOT(init));
     startButton.move(1500,200);
     startButton.setParent(this);
     count=0;
     step=0;
-    //connect(&tower,SIGNAL(clicked),this,SLOT(init));
-    //init();
 }
 
 void map::start(){
@@ -23,7 +19,6 @@ void map::start(){
 }
 
 void map::init(){
-
     timeID=startTimer(DELAY);
 }
 
@@ -34,6 +29,7 @@ void map::timerEvent(QTimerEvent * e){
     }
     else {
         npc.move();
+        defenceTower.attack(npc);
         repaint();
     }
 }
@@ -42,4 +38,5 @@ void map::paintEvent(QPaintEvent * e){
     Q_UNUSED(e);
     QPainter qp(this);
     npc.paint(qp);
+    defenceTower.paint(qp);
 }

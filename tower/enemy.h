@@ -6,18 +6,20 @@
 
 class enemy{
 public:
-    enemy();
+    enemy(int life = 1200);
     void move();
     void paint(QPainter & qp);
     bool dead();
+    void damage(int power);
     QImage dot;
+    int x;
+    int y;
 private:
 
     static const int LEN=100;
-    int x;
-    int y;
     int step;
     int timeID;
+    int life;
 
 };
 

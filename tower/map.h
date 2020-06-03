@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <enemy.h>
+#include "tower.h"
 
 class map : public QWidget{
 public:
@@ -29,6 +30,7 @@ private:
     int step=0;
     int timeID;
     enemy npc;
+    tower defenceTower;
 };
 
 #endif // MAP_H
