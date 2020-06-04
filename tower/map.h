@@ -13,28 +13,35 @@ public:
     bool gameover();
     void npcMove();
     void npcPaint(QPainter & qp);
+    void towerAttack();
+    void towerPaint(QPainter & qp);
+    bool isactive = false;
+    void countDeployedTower();
 public slots:
         void init();
-
+        void deploy();
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
+    void mousePressEvent(QMouseEvent *);
 
 private:
     QPushButton startButton;
+    QPushButton deployTower;
     static const int DELAY = 140;
     static const int B_WIDTH = 1920;
     static const int B_HEIGHT = 1080;
     static const int LEN = 1000;
     static const int ENEMY_NUM = 10;
+    int TOWER_NUM = 5;
     int x;
     int y;
     int count;
     int step;
     int timeID;
-
+    bool allowDeploy;
     QVector <enemy> npc;
-    tower defenceTower;
+    QVector <tower> defenceTower;
 };
 
 #endif // MAP_H

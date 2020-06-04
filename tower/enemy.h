@@ -18,7 +18,7 @@ public:
 private:
 
     static const int LEN=100;
-    static const int LIFE=1200;
+    static const int LIFE=12000;
     int step;
     int timeID;
     int life;

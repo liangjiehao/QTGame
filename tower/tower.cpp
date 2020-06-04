@@ -1,10 +1,8 @@
 #include "tower.h"
 #include <QPainter>
 #include <QDebug>
-tower::tower(){
-    tow.load("tow.png");
-    x=800;
-    y=200;
+tower::tower(int x,int y):x(x),y(y){
+    tow.load("tow1.png");
 }
 
 bool tower::checkEnemy(enemy & npc){
@@ -24,4 +22,15 @@ void tower::attack(QVector <enemy> & npc){
 
 void tower::paint(QPainter &qp){
     qp.drawImage(x,y,tow);
+}
+
+void tower::paint(QPainter &qp,QVector<enemy>&npc){
+    qp.drawImage(x,y,tow);
+    for (int i=0;i<=npc.size()-1;i++){
+        if (checkEnemy(npc[i]) && !npc[i].dead()){
+           qp.drawLine(npc[i].x+5,npc[i].y+5,x,y);
+           //qDebug()<<power<<endl;
+        }
+
+    }
 }

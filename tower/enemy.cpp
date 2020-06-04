@@ -13,34 +13,46 @@ enemy::enemy(int life):life(life){
 }
 
 void enemy::init(){
-    dot.load("dot.png");
+    dot.load("xiaobing.png");
     x=400;
     y=500;
     step=20;
     life=LIFE;
-    qDebug()<<"npc"<<endl;
+    //qDebug()<<"npc"<<endl;
 }
 
 void enemy::move(){
-    x+=step;
-}
+    if (x<=640 || x >=1000 || y==700){
+        if (x==1000 && y != 500){
+            y-=step;
+        }
+        else{
+            x+=step;
+        }
 
-void enemy::paint(QPainter &qp){
-    qp.drawImage(x,y,dot);
-    QPointF p;
-    p.setX(x);
-    p.setY(y+100);
-    //qDebug()<<life<<endl;
-    if (life<=0)
-        qp.drawText(p,"X");
-    else{
-        qp.drawText(p,QString::number(life));
+    }
+    else if (x==660){
+        y+=step;
     }
 
 }
 
+void enemy::paint(QPainter &qp){
+    if (!dead()){
+        qp.drawImage(x,y,dot);
+    }
+
+    QPointF p;
+    p.setX(x);
+    p.setY(y+70);
+    //qDebug()<<life<<endl;
+    if (!dead()){
+        qp.drawText(p,QString::number(life));
+    }
+}
+
 bool enemy::dead(){
-    return (x<1500 ? false :true)|(life<=0);
+    return (x<1500 ? false :true)||(life<=0);
 }
 
 void enemy::damage(int power){
