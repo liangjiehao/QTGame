@@ -25,16 +25,16 @@ void enemy::move(){
     if (y==_Y && x<1500){
         x+=step;
     }
-    else if(x==1500 && y<800){
+    else if(x==1500 && y<860){
         y+=step;
     }
-    else if(y==800 && x>_X){
+    else if(y==860 && x>_X){
         x-=step;
     }
-    else if(x== _X && y>_Y+160){
+    else if(x== _X && y>_Y+180){
         y-=step;
     }
-    else if (y==_Y+160 && x<1200){
+    else if (y==_Y+180 && x<1200){
         x+=step;
     }
     else if (x==1200 && y<600){
@@ -49,11 +49,13 @@ void enemy::move(){
 void enemy::paint(QPainter &qp){
     if (!dead()){
         qp.drawImage(x,y,dot);
-
+        QFont F;
+        F.setPointSize(10);
         QPointF p;
         p.setX(x);
         p.setY(y+70);
-
+        qp.setPen("white");
+        qp.setFont(F);
         qp.drawText(p,QString::number(life));
     }
 }

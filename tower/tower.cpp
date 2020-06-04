@@ -1,8 +1,15 @@
 #include "tower.h"
 #include <QPainter>
 #include <QDebug>
-tower::tower(int x,int y):x(x),y(y){
-    tow.load("tow1.png");
+tower::tower(int x,int y,int _power,int _range):range(_range),power(_power),x(x),y(y){
+    if (range>=300){
+        tow.load("redtow.png");
+        type="red";
+    }
+    else {
+        tow.load("bluetow.png");
+        type="blue";
+    }
 }
 
 bool tower::checkEnemy(enemy & npc){
@@ -27,7 +34,7 @@ void tower::paint(QPainter &qp){
 void tower::paint(QPainter &qp,QVector<enemy>&npc){
     qp.drawImage(x,y,tow);
     QPen pen;
-    pen.setColor("blue");
+    pen.setColor(type);
     pen.setWidthF(2);
     qp.setPen(pen);
     for (int i=0;i<=npc.size()-1;i++){

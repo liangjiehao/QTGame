@@ -19,18 +19,25 @@ public:
     bool isactive = false;
     void countDeployedTower();
     void npcAttack();
+    void reset();
+    void drawBackGround(QPainter & qp);
     base home;
 public slots:
         void init();
         void deploy();
+        void deploy_high();
+        void restart();
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
     void mousePressEvent(QMouseEvent *);
 
 private:
+    QImage backGround;
     QPushButton startButton;
     QPushButton deployTower;
+    QPushButton deployTowerHigh;
+    QPushButton reStart;
     static const int DELAY = 140;
     static const int B_WIDTH = 1920;
     static const int B_HEIGHT = 1080;
@@ -44,6 +51,8 @@ private:
     int timeID;
     int timeID1;
     bool allowDeploy;
+    int setPower;
+    int setRange;
     QVector <enemy> npc;
     QVector <tower> defenceTower;
 };

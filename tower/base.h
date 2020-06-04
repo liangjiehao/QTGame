@@ -10,7 +10,7 @@ public:
     void reset();
     int _base;
 private:
-    static const int BASE=12000;
+    static const int BASE=8000;
     QImage homebase;
     int x;
     int y;

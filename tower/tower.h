@@ -8,15 +8,17 @@
 class tower{
 public:
     QImage tow;
-    tower(int x=800,int y=450);
+    tower(int x=800,int y=450,int _power = 30,int _range = 200);
     bool checkEnemy(enemy & npc);
     void attack(QVector <enemy> & npc);
     void paint(QPainter & qp, QVector<enemy>&npc);
     void paint(QPainter &qp);
 private:
-    static const int power = 30;
+
     static const int gap = 200;
-    static const int range = 300;
+    QString type;
+    int range = 300;
+    int power;
     int x;
     int y;
 };
