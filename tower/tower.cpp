@@ -26,9 +26,13 @@ void tower::paint(QPainter &qp){
 
 void tower::paint(QPainter &qp,QVector<enemy>&npc){
     qp.drawImage(x,y,tow);
+    QPen pen;
+    pen.setColor("blue");
+    pen.setWidthF(2);
+    qp.setPen(pen);
     for (int i=0;i<=npc.size()-1;i++){
         if (checkEnemy(npc[i]) && !npc[i].dead()){
-           qp.drawLine(npc[i].x+5,npc[i].y+5,x,y);
+           qp.drawLine(npc[i].x+20,npc[i].y+20,x,y);
            //qDebug()<<power<<endl;
         }
 

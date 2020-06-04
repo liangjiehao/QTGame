@@ -15,13 +15,16 @@ public:
     QImage dot;
     int x;
     int y;
+    int life;
 private:
 
     static const int LEN=100;
-    static const int LIFE=12000;
+    static const int LIFE=2400;
+    static const int _X=200;//注意修改base
+    static const int _Y=60;
     int step;
     int timeID;
-    int life;
+
 
 };
 

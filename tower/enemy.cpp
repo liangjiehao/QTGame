@@ -7,32 +7,41 @@
 #include <QDebug>
 enemy::enemy(int life):life(life){
     dot.load("xiaobing.png");
-    x=400;
-    y=500;
+    x=_X;
+    y=_Y;
     step=20;
 }
 
 void enemy::init(){
     dot.load("xiaobing.png");
-    x=400;
-    y=500;
+    x=_X;
+    y=_Y;
     step=20;
     life=LIFE;
     //qDebug()<<"npc"<<endl;
 }
 
 void enemy::move(){
-    if (x<=640 || x >=1000 || y==700){
-        if (x==1000 && y != 500){
-            y-=step;
-        }
-        else{
-            x+=step;
-        }
-
+    if (y==_Y && x<1500){
+        x+=step;
     }
-    else if (x==660){
+    else if(x==1500 && y<800){
         y+=step;
+    }
+    else if(y==800 && x>_X){
+        x-=step;
+    }
+    else if(x== _X && y>_Y+160){
+        y-=step;
+    }
+    else if (y==_Y+160 && x<1200){
+        x+=step;
+    }
+    else if (x==1200 && y<600){
+        y+=step;
+    }
+    else if (y==600 && x>_X+300){
+        x-=step;
     }
 
 }
@@ -40,19 +49,21 @@ void enemy::move(){
 void enemy::paint(QPainter &qp){
     if (!dead()){
         qp.drawImage(x,y,dot);
-    }
 
-    QPointF p;
-    p.setX(x);
-    p.setY(y+70);
-    //qDebug()<<life<<endl;
-    if (!dead()){
+        QPointF p;
+        p.setX(x);
+        p.setY(y+70);
+
         qp.drawText(p,QString::number(life));
     }
 }
 
 bool enemy::dead(){
-    return (x<1500 ? false :true)||(life<=0);
+    if ((x==_X+300 && y==600) || (life<=0)){
+        return true;
+    }
+    else return false;
+
 }
 
 void enemy::damage(int power){

@@ -14,9 +14,9 @@ public:
     void paint(QPainter & qp, QVector<enemy>&npc);
     void paint(QPainter &qp);
 private:
-    static const int power = 100;
+    static const int power = 30;
     static const int gap = 200;
-    static const int range = 400;
+    static const int range = 300;
     int x;
     int y;
 };
