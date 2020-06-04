@@ -73,14 +73,14 @@ void map::reset(){
 }
 
 void map::deploy(){
-    qDebug()<<"tower deployed!"<<endl;
+    //qDebug()<<"tower deployed!"<<endl;
     allowDeploy=true;
     setPower=80;
     setRange=200;
 }
 
 void map::deploy_high(){
-    qDebug()<<"tower deployed!"<<endl;
+    //qDebug()<<"tower deployed!"<<endl;
     allowDeploy=true;
     setPower=30;
     setRange=350;
@@ -110,7 +110,7 @@ void map::timerEvent(QTimerEvent * e){
             killTimer(timeID);
             killTimer(timeID1);
             isactive=false;
-            qDebug()<<timeID<<" killed";
+            //qDebug()<<timeID<<" killed";
         }
         else {
             if (e->timerId()==timeID){
