@@ -1,13 +1,14 @@
 #include "tower.h"
 #include <QPainter>
 #include <QDebug>
+#include <QTime>
 tower::tower(int x,int y,int _power,int _range):range(_range),power(_power),x(x),y(y){
     if (range>=300){
-        tow.load("redtow.png");
+        tow.load(":/new/redtow.png");
         type="red";
     }
     else {
-        tow.load("bluetow.png");
+        tow.load(":/new/bluetow.png");
         type="blue";
     }
 }
@@ -19,7 +20,21 @@ bool tower::checkEnemy(enemy & npc){
 void tower::attack(QVector <enemy> & npc){
     for (int i=0;i<=npc.size()-1;i++){
         if (checkEnemy(npc[i])){
-           npc[i].damage(power);
+
+            QTime time = QTime::currentTime();
+            qsrand(time.msec()+time.second()*1000);
+            //qsrand(13);
+            //int m=0;
+            int n = power;
+            if (type=="blue"){
+                n+=(qrand() % 20);
+            }
+
+            if ((qrand() % 67 )==1 && type=="red"){
+                n=npc[i].life;
+            }
+
+           npc[i].damage(n);
            //qDebug()<<power<<endl;
         }
 

@@ -3,9 +3,9 @@
 #include <QPainter>
 #include <QFont>
 base::base(int base):_base(base){
-    homebase.load("base.png");
+    homebase.load(":/new/base0.png");
     x=400;
-    y=600;
+    y=550;
 }
 
 void base::beAttacked(enemy &npc){
@@ -18,15 +18,20 @@ void base::paint(QPainter & qp){
     F.setPointSize(20);
     QPointF p;
     p.setX(x+15);
-    p.setY(y+120);
+    p.setY(y+150);
     if (_base>0){
-        qp.setPen("white");
+        if (_base<2000){
+            qp.setPen("red");
+        }
+        else{
+            qp.setPen("green");
+        }
         qp.setFont(F);
         qp.drawText(p,QString::number(_base));
     }
 
 }
 
-void base::reset(){
-    _base=BASE;
+void base::reset(int baselife){
+    _base=baselife;
 }

@@ -13,6 +13,8 @@ public:
     void attack(QVector <enemy> & npc);
     void paint(QPainter & qp, QVector<enemy>&npc);
     void paint(QPainter &qp);
+    int getX(){return x;}
+    int getY(){return y;}
 private:
 
     static const int gap = 200;

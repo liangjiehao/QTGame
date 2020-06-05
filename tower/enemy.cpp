@@ -6,14 +6,14 @@
 #include "enemy.h"
 #include <QDebug>
 enemy::enemy(int life):life(life){
-    dot.load("xiaobing.png");
+    dot.load(":/new/xiaobing.png");
     x=_X;
     y=_Y;
     step=20;
 }
 
 void enemy::init(){
-    dot.load("xiaobing.png");
+    dot.load(":/new/xiaobing.png");
     x=_X;
     y=_Y;
     step=20;
@@ -54,7 +54,12 @@ void enemy::paint(QPainter &qp){
         QPointF p;
         p.setX(x);
         p.setY(y+70);
-        qp.setPen("white");
+        if (life<=2000){
+            qp.setPen("red");
+        }
+        else {
+            qp.setPen("white");
+        }
         qp.setFont(F);
         qp.drawText(p,QString::number(life));
     }
