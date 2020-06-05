@@ -20,13 +20,25 @@ public:
     void countDeployedTower();
     void npcAttack();
     void reset();
-    void drawBackGround(QPainter & qp);
+    void drawBackGround(QPainter & qp,QString map);
+    bool checkOverlap(int,int);
+    void initMain();
+    void initenemy();
     base home;
+    QString BG;
+    QString pageControl;
 public slots:
         void init();
+        void initEasy();
+        void initHard();
+        void initEvil();
         void deploy();
         void deploy_high();
         void restart();
+        void displayRule();
+        void selectChapter();
+        void backToMain();
+        void setButton();
 protected:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
@@ -38,11 +50,16 @@ private:
     QPushButton deployTower;
     QPushButton deployTowerHigh;
     QPushButton reStart;
+    QPushButton enterGame;
+    QPushButton showRule;
+    QPushButton backTo;
+    QPushButton easy,hard,evil;
     static const int DELAY = 140;
     static const int B_WIDTH = 1920;
     static const int B_HEIGHT = 1080;
     static const int LEN = 1000;
-    static const int ENEMY_NUM = 20;
+    static const int OVERLAP =150;
+    int ENEMY_NUM = 20;
     int TOWER_NUM = 5;
     int x;
     int y;
