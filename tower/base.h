@@ -7,7 +7,7 @@ public:
     base(int base=BASE);
     void beAttacked(enemy & npc);
     void paint(QPainter & qp);
-    void reset();
+    void reset(int base=BASE);
     int _base;
 private:
     static const int BASE=8000;

@@ -18,6 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     base.cpp \
     enemy.cpp \
+    event.cpp \
+    init.cpp \
     main.cpp \
     mainwindow.cpp \
     map.cpp \
@@ -40,3 +42,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     dot.png
+
+RESOURCES += \
+    image.qrc

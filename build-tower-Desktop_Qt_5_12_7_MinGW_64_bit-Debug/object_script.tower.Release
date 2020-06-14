@@ -1,0 +1,10 @@
+release/base.o
+release/enemy.o
+release/event.o
+release/init.o
+release/main.o
+release/mainwindow.o
+release/map.o
+release/tower.o
+release/qrc_image.o
+release/moc_mainwindow.o

@@ -3,9 +3,9 @@
 
 #include <QImage>
 #include "enemy.h"
+#include <QPushButton>
 
-
-class tower{
+class tower:public QPushButton{
 public:
     QImage tow;
     tower(int x=800,int y=450,int _power = 30,int _range = 200);
@@ -13,6 +13,8 @@ public:
     void attack(QVector <enemy> & npc);
     void paint(QPainter & qp, QVector<enemy>&npc);
     void paint(QPainter &qp);
+    int getX(){return x;}
+    int getY(){return y;}
 private:
 
     static const int gap = 200;

@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/new">
+        <file>BGMain.png</file>
+        <file>back.png</file>
+        <file>base.png</file>
+        <file>BGChapter.png</file>
+        <file>BGEasy.png</file>
+        <file>BGEvil.png</file>
+        <file>BGHard.png</file>
+        <file>BGRule.png</file>
+        <file>bluetow.png</file>
+        <file>bluetowic.png</file>
+        <file>easy.png</file>
+        <file>entergame.png</file>
+        <file>evil.png</file>
+        <file>hard.png</file>
+        <file>redtow.png</file>
+        <file>redtowic.png</file>
+        <file>restart.png</file>
+        <file>rule.png</file>
+        <file>start.png</file>
+        <file>xiaobing.png</file>
+        <file>base0.png</file>
+    </qresource>
+</RCC>
