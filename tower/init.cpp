@@ -206,24 +206,3 @@ void map::initEvil(){
         home.reset(20000);
         repaint();
 }
-
-void map::paintEvent(QPaintEvent * e){
-    Q_UNUSED(e);
-    QPainter qp(this);
-    if (pageControl == "main"){
-        drawBackGround(qp,BG);
-    }
-    else if (pageControl == "rule"){
-        drawBackGround(qp,BG);
-    }
-    else if (pageControl == "selectChapter" ){
-        drawBackGround(qp,BG);
-    }
-    else {
-        drawBackGround(qp,BG);
-        home.paint(qp);
-        npcPaint(qp);
-        towerPaint(qp);
-    }
-
-}

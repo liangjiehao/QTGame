@@ -17,11 +17,8 @@ map::map(QWidget * parent):QWidget(parent){
 
     initMain();
 
-    //reset();
     update();
 }
-
-
 
 
 
@@ -186,4 +183,3 @@ bool map::gameover(){
     }
     return temp ;
 }
-

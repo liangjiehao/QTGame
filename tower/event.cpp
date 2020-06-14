@@ -12,7 +12,7 @@
 void map::mousePressEvent(QMouseEvent * e){
     if (allowDeploy && TOWER_NUM >=1){
         if (checkOverlap(e->x(),e->y())){
-            tower _tow(e->x()-18,e->y()-60,setPower,setRange);
+            tower _tow(this,e->x()-18,e->y()-60,setPower,setRange);
             defenceTower.push_back(_tow);
             QPainter qp(this);
             _tow.paint(qp);

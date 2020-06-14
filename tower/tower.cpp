@@ -2,16 +2,50 @@
 #include <QPainter>
 #include <QDebug>
 #include <QTime>
-tower::tower(int x,int y,int _power,int _range):range(_range),power(_power),x(x),y(y){
+#include <QWidget>
+#include <QSize>
+
+tower::tower(QWidget * parent,int x,int y,int _power,int _range)
+    :towParent(parent),range(_range),power(_power),x(x),y(y){
     if (range>=300){
-        tow.load(":/new/redtow.png");
+        //tow.load(":/new/redtow.png");
+        towType=QIcon(":/new/redtow.png");
         type="red";
     }
     else {
-        tow.load(":/new/bluetow.png");
+        //tow.load(":/new/bluetow.png");
+        towType=QIcon(":/new/bluetow.png");
         type="blue";
     }
+    towerButton.setParent(towParent);
+    towerButton.setIcon(towType);
+    towerButton.setIconSize(QSize(100,100));
+    towerButton.move(x,y);
+}
 
+tower::tower(const tower & T):towParent(T.towParent),range(T.range),power(T.power),x(T.x),y(T.y){
+    tow=T.tow;
+    type=T.type;
+    towType=T.towType;
+    towerButton.setParent(towParent);
+    towerButton.setIcon(towType);
+    towerButton.setIconSize(QSize(100,100));
+    towerButton.move(x,y);
+}
+
+void tower::operator=(const tower & T){
+    tow=T.tow;
+    type=T.type;
+    towType=T.towType;
+    towParent=T.towParent;
+    range=T.range;
+    power=T.power;
+    x=T.x;
+    y=T.y;
+    towerButton.setParent(towParent);
+    towerButton.setIcon(towType);
+    towerButton.setIconSize(QSize(100,100));
+    towerButton.move(x,y);
 }
 
 bool tower::checkEnemy(enemy & npc){
@@ -45,10 +79,12 @@ void tower::attack(QVector <enemy> & npc){
 
 void tower::paint(QPainter &qp){
     qp.drawImage(x,y,tow);
+    towerButton.show();
 }
 
 void tower::paint(QPainter &qp,QVector<enemy>&npc){
     qp.drawImage(x,y,tow);
+    towerButton.show();
     QPen pen;
     pen.setColor(type);
     pen.setWidthF(2);
