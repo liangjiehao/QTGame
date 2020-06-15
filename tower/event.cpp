@@ -8,11 +8,13 @@
 #include <QImage>
 #include <QIcon>
 #include <QSize>
+#include <QDebug>
 
 void map::mousePressEvent(QMouseEvent * e){
+    qDebug()<<"click position:"<<e->x()<<' '<<e->y();
     if (allowDeploy && TOWER_NUM >=1){
         if (checkOverlap(e->x(),e->y())){
-            tower _tow(this,e->x()-18,e->y()-60,setPower,setRange);
+            tower _tow(this,e->x(),e->y(),setPower,setRange);
             defenceTower.push_back(_tow);
             QPainter qp(this);
             _tow.paint(qp);

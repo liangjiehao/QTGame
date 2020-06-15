@@ -4,23 +4,30 @@
 #include <QTime>
 #include <QWidget>
 #include <QSize>
+#include <QObject>
 
 tower::tower(QWidget * parent,int x,int y,int _power,int _range)
     :towParent(parent),range(_range),power(_power),x(x),y(y){
+    //qDebug()<<"old tower position:"<<x<<' '<<y<<endl;
     if (range>=300){
-        //tow.load(":/new/redtow.png");
+        tow.load(":/new/redtow.png");
         towType=QIcon(":/new/redtow.png");
         type="red";
     }
     else {
-        //tow.load(":/new/bluetow.png");
+        tow.load(":/new/bluetow.png");
         towType=QIcon(":/new/bluetow.png");
         type="blue";
     }
+    setPosition();
+    //qDebug()<<"icon size:"<<towType.actualSize(QSize(100,200)).width()<<' '
+           //<<towType.actualSize(QSize(100,200)).height()<<endl;
     towerButton.setParent(towParent);
     towerButton.setIcon(towType);
-    towerButton.setIconSize(QSize(100,100));
-    towerButton.move(x,y);
+    towerButton.setIconSize(towType.actualSize(QSize(100,200)));
+    towerButton.move(this->x,this->y);
+    //qDebug()<<"new tower position:"<<this->x<<' '<<this->y<<endl;
+
 }
 
 tower::tower(const tower & T):towParent(T.towParent),range(T.range),power(T.power),x(T.x),y(T.y){
@@ -29,23 +36,32 @@ tower::tower(const tower & T):towParent(T.towParent),range(T.range),power(T.powe
     towType=T.towType;
     towerButton.setParent(towParent);
     towerButton.setIcon(towType);
-    towerButton.setIconSize(QSize(100,100));
+    towerButton.setIconSize(towType.actualSize(QSize(100,200)));
     towerButton.move(x,y);
 }
 
 void tower::operator=(const tower & T){
-    tow=T.tow;
-    type=T.type;
-    towType=T.towType;
-    towParent=T.towParent;
+    tow =T.tow;
+    type =T.type;
+    towType =T.towType;
+    towParent =T.towParent;
     range=T.range;
     power=T.power;
     x=T.x;
     y=T.y;
     towerButton.setParent(towParent);
     towerButton.setIcon(towType);
-    towerButton.setIconSize(QSize(100,100));
+    towerButton.setIconSize(towType.actualSize(QSize(100,200)));
     towerButton.move(x,y);
+}
+
+void tower::func(){
+    QObject::connect(&updateTower,&QPushButton::clicked,this,&tower::updateTower);
+}
+
+void tower::setPosition(){
+    x -= towType.actualSize(QSize(100,200)).width()/2;
+    y -= towType.actualSize(QSize(100,200)).height()/2;
 }
 
 bool tower::checkEnemy(enemy & npc){
@@ -79,21 +95,40 @@ void tower::attack(QVector <enemy> & npc){
 
 void tower::paint(QPainter &qp){
     qp.drawImage(x,y,tow);
-    towerButton.show();
+    //Q_UNUSED(qp);
+    //towerButton.show();
+    //towerButton.lower();
 }
 
 void tower::paint(QPainter &qp,QVector<enemy>&npc){
     qp.drawImage(x,y,tow);
-    towerButton.show();
+
+    //towerButton.show();
+    //towerButton.lower();
     QPen pen;
     pen.setColor(type);
     pen.setWidthF(2);
     qp.setPen(pen);
     for (int i=0;i<=npc.size()-1;i++){
         if (checkEnemy(npc[i]) && !npc[i].dead()){
-           qp.drawLine(npc[i].x+20,npc[i].y+20,x,y);
-           //qDebug()<<power<<endl;
+           qDebug()<<"tower attack position:"<<x<<' '<<y<<endl;
+           qp.drawLine(npc[i].x+20,npc[i].y+20,x+11,y+2);
+
         }
 
     }
+}
+
+void tower::updateTowerFun(){
+    updateTower.setParent(towParent);
+    updateTower.move(x+50,y);
+    updateTower.setText("update");
+    updateTower.show();
+}
+
+void tower::deleteTowerFun(){
+    deleteTower.setParent(towParent);
+    deleteTower.move(x+50,y+50);
+    deleteTower.setText("delete");
+    deleteTower.show();
 }
