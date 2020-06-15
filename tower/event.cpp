@@ -9,21 +9,34 @@
 #include <QIcon>
 #include <QSize>
 #include <QDebug>
+#include <Qt>
 
 void map::mousePressEvent(QMouseEvent * e){
-    qDebug()<<"click position:"<<e->x()<<' '<<e->y();
+    //qDebug()<<"click position:"<<e->x()<<' '<<e->y();
+
     if (allowDeploy && TOWER_NUM >=1){
+
         if (checkOverlap(e->x(),e->y())){
             tower _tow(this,e->x(),e->y(),setPower,setRange);
             defenceTower.push_back(_tow);
+            defenceTower.back().func();
             QPainter qp(this);
             _tow.paint(qp);
+            //defenceTower.back();
             countDeployedTower();
+            towerControl="";
+            setCursor(Qt::ArrowCursor);
         }
+        /*
         else{
             allowDeploy=false;
         }
+        */
         update();
+    }
+    else{
+        setCursor(Qt::ArrowCursor);
+        //QCursor
     }
 }
 
@@ -53,6 +66,7 @@ void map::timerEvent(QTimerEvent * e){
 void map::paintEvent(QPaintEvent * e){
     Q_UNUSED(e);
     QPainter qp(this);
+
     if (pageControl == "main"){
         drawBackGround(qp,BG);
     }
@@ -67,6 +81,10 @@ void map::paintEvent(QPaintEvent * e){
         home.paint(qp);
         npcPaint(qp);
         towerPaint(qp);
+    }
+
+    if (towerControl=="showTowerRange"){
+        showTowerRange(qp);
     }
 
 }

@@ -105,10 +105,15 @@ void map::reset(){
         defenceTower.pop_back();
         TOWER_NUM++;
     }
+    allowDeploy=false;
+    setCursor(Qt::ArrowCursor);
 }
 
 void map::deploy(){
     //qDebug()<<"tower deployed!"<<endl;
+    setCursor(QPixmap(":/new/bluetow.png"));
+    towerControl="showTowerRange";
+    update();
     allowDeploy=true;
     setPower=60;
     setRange=200;
@@ -119,6 +124,9 @@ void map::deploy(){
 
 void map::deploy_high(){
     //qDebug()<<"tower deployed!"<<endl;
+    setCursor(QPixmap(":/new/redtow.png"));
+    towerControl="showTowerRange";
+    update();
     allowDeploy=true;
     setPower=30;
     setRange=400;
@@ -132,11 +140,20 @@ void map::countDeployedTower(){
     allowDeploy=false;
 }
 
+void map::showTowerRange(QPainter &qp){
+    if(!defenceTower.isEmpty()){
+        for (int i=0;i<=defenceTower.size()-1;i++){
+            defenceTower[i].showDeployRange(qp,OVERLAP);
+        }
+    }
+}
+
 
 bool map::checkOverlap(int x,int y){
     for (int i=0;i<=defenceTower.size()-1;i++){
-        if (((x-defenceTower[i].getX())*(x-defenceTower[i].getX())
-                +(y-defenceTower[i].getY())*(y-defenceTower[i].getY()))< (OVERLAP*OVERLAP)){
+
+        if (((x-defenceTower[i].getXC())*(x-defenceTower[i].getXC())
+                +(y-defenceTower[i].getYC())*(y-defenceTower[i].getYC()))< (OVERLAP*OVERLAP)){
             return false;
         }
     }

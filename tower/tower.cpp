@@ -22,22 +22,24 @@ tower::tower(QWidget * parent,int x,int y,int _power,int _range)
     setPosition();
     //qDebug()<<"icon size:"<<towType.actualSize(QSize(100,200)).width()<<' '
            //<<towType.actualSize(QSize(100,200)).height()<<endl;
-    towerButton.setParent(towParent);
-    towerButton.setIcon(towType);
-    towerButton.setIconSize(towType.actualSize(QSize(100,200)));
-    towerButton.move(this->x,this->y);
+    this->setParent(towParent);
+    this->setIcon(towType);
+    this->setIconSize(towType.actualSize(QSize(100,200)));
+    this->move(this->x,this->y);
     //qDebug()<<"new tower position:"<<this->x<<' '<<this->y<<endl;
+    //func();
 
 }
 
-tower::tower(const tower & T):towParent(T.towParent),range(T.range),power(T.power),x(T.x),y(T.y){
+tower::tower(const tower & T):QPushButton(),towParent(T.towParent),range(T.range),power(T.power),x(T.x),y(T.y){
     tow=T.tow;
     type=T.type;
     towType=T.towType;
-    towerButton.setParent(towParent);
-    towerButton.setIcon(towType);
-    towerButton.setIconSize(towType.actualSize(QSize(100,200)));
-    towerButton.move(x,y);
+    setParent(towParent);
+    setIcon(towType);
+    setIconSize(towType.actualSize(QSize(100,200)));
+    move(x,y);
+    //qDebug()<<"copy tower position:"<<this->x<<' '<<this->y<<endl;
 }
 
 void tower::operator=(const tower & T){
@@ -49,19 +51,20 @@ void tower::operator=(const tower & T){
     power=T.power;
     x=T.x;
     y=T.y;
-    towerButton.setParent(towParent);
-    towerButton.setIcon(towType);
-    towerButton.setIconSize(towType.actualSize(QSize(100,200)));
-    towerButton.move(x,y);
+    setParent(towParent);
+    setIcon(towType);
+    setIconSize(towType.actualSize(QSize(100,200)));
+    move(x,y);
+    //qDebug()<<"= tower position:"<<this->x<<' '<<this->y<<endl;
 }
 
 void tower::func(){
-    QObject::connect(&updateTower,&QPushButton::clicked,this,&tower::updateTower);
+    connect(this,&QPushButton::clicked,this,&tower::updateTowerFun);
 }
 
 void tower::setPosition(){
-    x -= towType.actualSize(QSize(100,200)).width()/2;
-    y -= towType.actualSize(QSize(100,200)).height()/2;
+    x -= (towType.actualSize(QSize(100,200)).width()/2+5);
+    y -= (towType.actualSize(QSize(100,200)).height()/2+5);
 }
 
 bool tower::checkEnemy(enemy & npc){
@@ -94,36 +97,67 @@ void tower::attack(QVector <enemy> & npc){
 }
 
 void tower::paint(QPainter &qp){
-    qp.drawImage(x,y,tow);
+    //qp.drawImage(x,y,tow);
     //Q_UNUSED(qp);
-    //towerButton.show();
-    //towerButton.lower();
+    QPushButton::show();
+
 }
 
 void tower::paint(QPainter &qp,QVector<enemy>&npc){
-    qp.drawImage(x,y,tow);
+    //qp.drawImage(x,y,tow);
 
-    //towerButton.show();
-    //towerButton.lower();
+    QPushButton::show();
+
     QPen pen;
     pen.setColor(type);
     pen.setWidthF(2);
     qp.setPen(pen);
+    //qp.drawLine(100,100,200,200);
     for (int i=0;i<=npc.size()-1;i++){
         if (checkEnemy(npc[i]) && !npc[i].dead()){
-           qDebug()<<"tower attack position:"<<x<<' '<<y<<endl;
+           //qDebug()<<"tower attack position:"<<x<<' '<<y<<endl;
            qp.drawLine(npc[i].x+20,npc[i].y+20,x+11,y+2);
 
         }
 
     }
 }
+/*
+void tower::paintEvent(QPaintEvent * e){
+    QPainter qp(towParent);
+    QPen pen;
+    pen.setColor("red");
+    qp.setPen(pen);
+    qp.drawLine(100,100,200,200);
+    qp.drawEllipse(500,500,500,500);
+    qDebug()<<"painted!!!";
+}
+*/
+void tower::showDeployRange(QPainter & qp,int range){
+    //QPainter qp(this->towParent);
+    QPen pen;
+    pen.setColor("green");
+    qp.setPen(pen);
+    //qp.drawLine(100,100,200,200);
+    //qp.drawEllipse(x-range+towType.actualSize(QSize(200,200)).width()/2,y-range,2*range,2*range);
+    qp.drawEllipse(x-range,y-range,2*range,2*range);
+    //qDebug()<<"painted!!!";
+}
 
 void tower::updateTowerFun(){
-    updateTower.setParent(towParent);
-    updateTower.move(x+50,y);
-    updateTower.setText("update");
-    updateTower.show();
+    if (funcControl){
+        updateTower.setParent(towParent);
+        updateTower.move(x+50,y);
+        updateTower.setText("update");
+        updateTower.show();
+        funcControl=false;
+    }
+    else {
+        updateTower.hide();
+        funcControl=true;
+    }
+
+    qDebug()<<"update";
 }
 
 void tower::deleteTowerFun(){

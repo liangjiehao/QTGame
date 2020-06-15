@@ -5,7 +5,7 @@
 #include "enemy.h"
 #include <QPushButton>
 
-class tower{
+class tower:public QPushButton{
 public:
     QImage tow;
     QIcon towType;
@@ -20,16 +20,25 @@ public:
     void paint(QPainter &qp);
     int getX(){return x;}
     int getY(){return y;}
+    int getXC(){return x+towType.actualSize(QSize(100,200)).width()/2;}
+    int getYC(){return y+towType.actualSize(QSize(100,200)).height()/2;}
     void func();
+    void showDeployRange(QPainter &,int range=200);
 
 public slots:
     void updateTowerFun();
     void deleteTowerFun();
 
+
+//protected:
+    //void paintEvent(QPaintEvent *) override;
+
 private:
 
-    QPushButton towerButton,updateTower,deleteTower;
+    //QPushButton towerButton,updateTower,deleteTower;
+    QPushButton updateTower,deleteTower;
     QWidget * towParent;
+    bool funcControl = true;
     static const int gap = 200;
     QString type;
     int range = 300;

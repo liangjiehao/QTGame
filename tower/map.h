@@ -24,9 +24,10 @@ public:
     bool checkOverlap(int,int);
     void initMain();
     void initenemy();
+    void showTowerRange(QPainter &);
     base home;
     QString BG;
-    QString pageControl;
+    QString pageControl,towerControl;
 public slots:
         void init();
         void initEasy();
