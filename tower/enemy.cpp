@@ -5,11 +5,28 @@
 #include <QPushButton>
 #include "enemy.h"
 #include <QDebug>
-enemy::enemy(int life):life(life){
+
+enemy::enemy(int life):QPushButton(),life(life){
     dot.load(":/new/xiaobing.png");
     x=_X;
     y=_Y;
     step=20;
+}
+
+enemy::enemy(const enemy& p):QPushButton(){
+    x=p.x;
+    y=p.y;
+    step=20;
+    dot=p.dot;
+    life=p.life;
+}
+
+void enemy::operator=(const enemy& p){
+    x=p.x;
+    y=p.y;
+    step=20;
+    dot=p.dot;
+    life=p.life;
 }
 
 void enemy::init(){

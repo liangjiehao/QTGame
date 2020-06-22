@@ -8,6 +8,7 @@
 #include <QImage>
 #include <QIcon>
 #include <QSize>
+#include <QPropertyAnimation>
 
 void map::initMain(){
     BG=":/new/BGMain.png";
@@ -126,11 +127,30 @@ void map::drawBackGround(QPainter & qp,QString map){
     qp.drawImage(0,0,backGround);}
 
 void map::init(){
+
         if (!isactive){
             isactive=true;
             initenemy();
+            /*
+            test.setIcon(QIcon(":/new/xiaobing.png"));
+            test.setParent(this);
+            test.show();
+
+            npc[0].setIcon(QIcon(":/new/xiaobing.png"));
+            npc[0].setIconSize(QSize(200,200));
+            npc[0].setParent(this);
+            npc[0].show();
+
+            QPropertyAnimation *testAnimation = new QPropertyAnimation(&npc[0],"pos");
+            testAnimation->setDuration(10000);
+            testAnimation->setStartValue(QPoint(300,300));
+            testAnimation->setEndValue(QPoint(800,800));
+            testAnimation->start();
+            */
             timeID=startTimer(DELAY);
-            timeID1=startTimer(3*DELAY);
+            timeID1=startTimer(10*DELAY);
+
+
         }
 
     }
@@ -156,6 +176,14 @@ void map::initEasy(){
         reStart.show();
 
         home.reset();
+
+/*
+        QPropertyAnimation *testAnimation = new QPropertyAnimation(&deployTower,"pos");
+        testAnimation->setDuration(5000);
+        testAnimation->setStartValue(QPoint(300,300));
+        testAnimation->setEndValue(QPoint(800,800));
+        testAnimation->start();
+*/
         repaint();
     }
 

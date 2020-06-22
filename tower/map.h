@@ -73,6 +73,7 @@ private:
     int setRange;
     QVector <enemy> npc;
     QVector <tower> defenceTower;
+    enemy test;
 };
 
 #endif // MAP_H

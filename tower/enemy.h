@@ -4,9 +4,11 @@
 #include <QWidget>
 #include <QPushButton>
 
-class enemy{
+class enemy:public QPushButton{
 public:
     enemy(int life = LIFE);
+    enemy(const enemy&);
+    void operator=(const enemy&);
     void move();
     void paint(QPainter & qp);
     bool dead();

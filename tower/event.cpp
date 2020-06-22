@@ -10,6 +10,8 @@
 #include <QSize>
 #include <QDebug>
 #include <Qt>
+#include <QPropertyAnimation>
+
 
 void map::mousePressEvent(QMouseEvent * e){
     //qDebug()<<"click position:"<<e->x()<<' '<<e->y();
@@ -19,7 +21,7 @@ void map::mousePressEvent(QMouseEvent * e){
         if (checkOverlap(e->x(),e->y())){
             tower _tow(this,e->x(),e->y(),setPower,setRange);
             defenceTower.push_back(_tow);
-            defenceTower.back().func();
+            //defenceTower.back().func();
             QPainter qp(this);
             _tow.paint(qp);
             //defenceTower.back();
@@ -52,11 +54,14 @@ void map::timerEvent(QTimerEvent * e){
         else {
             if (e->timerId()==timeID){
                 npcMove();
+
             }
             if (e->timerId()==timeID1){
                 towerAttack();
+                //npcAttack();
             }
             npcAttack();
+
             repaint();
         }
 

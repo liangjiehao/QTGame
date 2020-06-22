@@ -27,7 +27,7 @@ tower::tower(QWidget * parent,int x,int y,int _power,int _range)
     this->setIconSize(towType.actualSize(QSize(100,200)));
     this->move(this->x,this->y);
     //qDebug()<<"new tower position:"<<this->x<<' '<<this->y<<endl;
-    //func();
+    func();
 
 }
 
@@ -39,6 +39,7 @@ tower::tower(const tower & T):QPushButton(),towParent(T.towParent),range(T.range
     setIcon(towType);
     setIconSize(towType.actualSize(QSize(100,200)));
     move(x,y);
+    func();
     //qDebug()<<"copy tower position:"<<this->x<<' '<<this->y<<endl;
 }
 
@@ -55,6 +56,7 @@ void tower::operator=(const tower & T){
     setIcon(towType);
     setIconSize(towType.actualSize(QSize(100,200)));
     move(x,y);
+    func();
     //qDebug()<<"= tower position:"<<this->x<<' '<<this->y<<endl;
 }
 
