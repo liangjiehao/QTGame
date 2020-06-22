@@ -17,6 +17,7 @@ map::map(QWidget * parent):QWidget(parent){
 
     initMain();
 
+<<<<<<< HEAD
     //reset();
     update();
 }
@@ -87,6 +88,13 @@ void map::drawBackGround(QPainter & qp,QString map){
     backGround.load(map);
     qp.drawImage(0,0,backGround);
 }
+=======
+    update();
+}
+
+
+
+>>>>>>> dev
 void map::start(){
     connect(&backTo,&QPushButton::clicked,this,&map::backToMain);
     connect(&showRule,&QPushButton::clicked,this,&map::displayRule);
@@ -103,6 +111,7 @@ void map::start(){
 void map::backToMain(){
     restart();
     initMain();
+<<<<<<< HEAD
 }
 
 void map::displayRule(){
@@ -222,7 +231,48 @@ void map::initEvil(){
 
     home.reset(20000);
     repaint();
+=======
+>>>>>>> dev
 }
+
+void map::displayRule(){
+    pageControl="rule";
+    BG=":/new/BGRule.png";
+
+    startButton.hide();
+    deployTower.hide();
+    deployTowerHigh.hide();
+    reStart.hide();
+    easy.hide();
+    hard.hide();
+    evil.hide();
+    enterGame.hide();
+    showRule.hide();
+
+    backTo.show();
+    repaint();
+}
+
+void map::selectChapter(){
+    pageControl = "selectChapter";
+    BG = ":/new/BGChapter.png";
+
+    startButton.hide();
+    deployTower.hide();
+    deployTowerHigh.hide();
+    reStart.hide();
+    enterGame.hide();
+    showRule.hide();
+
+    backTo.show();
+    easy.show();
+    hard.show();
+    evil.show();
+
+    repaint();
+}
+
+
 
 void map::restart(){
     if (isactive){
@@ -250,10 +300,15 @@ void map::reset(){
         defenceTower.pop_back();
         TOWER_NUM++;
     }
+    allowDeploy=false;
+    setCursor(Qt::ArrowCursor);
 }
 
 void map::deploy(){
     //qDebug()<<"tower deployed!"<<endl;
+    setCursor(QPixmap(":/new/bluetow.png"));
+    towerControl="showTowerRange";
+    update();
     allowDeploy=true;
     setPower=60;
     setRange=200;
@@ -264,6 +319,9 @@ void map::deploy(){
 
 void map::deploy_high(){
     //qDebug()<<"tower deployed!"<<endl;
+    setCursor(QPixmap(":/new/redtow.png"));
+    towerControl="showTowerRange";
+    update();
     allowDeploy=true;
     setPower=30;
     setRange=400;
@@ -276,6 +334,7 @@ void map::countDeployedTower(){
     TOWER_NUM--;
     allowDeploy=false;
 }
+<<<<<<< HEAD
 void map::mousePressEvent(QMouseEvent * e){
     if (allowDeploy && TOWER_NUM >=1){
         if (checkOverlap(e->x(),e->y())){
@@ -322,12 +381,32 @@ void map::timerEvent(QTimerEvent * e){
             }
             npcAttack();
             repaint();
+=======
+
+void map::showTowerRange(QPainter &qp){
+    if(!defenceTower.isEmpty()){
+        for (int i=0;i<=defenceTower.size()-1;i++){
+            defenceTower[i].showDeployRange(qp,OVERLAP);
+>>>>>>> dev
         }
-
-
+    }
 }
 
 
+bool map::checkOverlap(int x,int y){
+    for (int i=0;i<=defenceTower.size()-1;i++){
+
+<<<<<<< HEAD
+
+=======
+        if (((x-defenceTower[i].getXC())*(x-defenceTower[i].getXC())
+                +(y-defenceTower[i].getYC())*(y-defenceTower[i].getYC()))< (OVERLAP*OVERLAP)){
+            return false;
+        }
+    }
+    return true;
+}
+>>>>>>> dev
 
 void map::npcMove(){
     for (int i=0;i<=npc.size()-1;i++){

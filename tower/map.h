@@ -24,9 +24,16 @@ public:
     bool checkOverlap(int,int);
     void initMain();
     void initenemy();
+<<<<<<< HEAD
     base home;
     QString BG;
     QString pageControl;
+=======
+    void showTowerRange(QPainter &);
+    base home;
+    QString BG;
+    QString pageControl,towerControl;
+>>>>>>> dev
 public slots:
         void init();
         void initEasy();
@@ -72,6 +79,7 @@ private:
     int setRange;
     QVector <enemy> npc;
     QVector <tower> defenceTower;
+    enemy test;
 };
 
 #endif // MAP_H
