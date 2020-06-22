@@ -5,12 +5,8 @@
 #include <QPushButton>
 #include "enemy.h"
 #include <QDebug>
-<<<<<<< HEAD
-enemy::enemy(int life):life(life){
-=======
 
 enemy::enemy(int life):QPushButton(),life(life){
->>>>>>> dev
     dot.load(":/new/xiaobing.png");
     x=_X;
     y=_Y;

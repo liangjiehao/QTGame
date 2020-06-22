@@ -20,8 +20,6 @@ public:
     void paint(QPainter &qp);
     int getX(){return x;}
     int getY(){return y;}
-<<<<<<< HEAD
-=======
     int getXC(){return x+towType.actualSize(QSize(100,200)).width()/2;}
     int getYC(){return y+towType.actualSize(QSize(100,200)).height()/2;}
     void func();
@@ -35,7 +33,6 @@ public slots:
 //protected:
     //void paintEvent(QPaintEvent *) override;
 
->>>>>>> dev
 private:
 
     //QPushButton towerButton,updateTower,deleteTower;

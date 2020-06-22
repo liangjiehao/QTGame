@@ -2,11 +2,6 @@
 #include <QPainter>
 #include <QDebug>
 #include <QTime>
-<<<<<<< HEAD
-tower::tower(int x,int y,int _power,int _range):range(_range),power(_power),x(x),y(y){
-    if (range>=300){
-        tow.load(":/new/redtow.png");
-=======
 #include <QWidget>
 #include <QSize>
 #include <QObject>
@@ -17,15 +12,11 @@ tower::tower(QWidget * parent,int x,int y,int _power,int _range)
     if (range>=300){
         tow.load(":/new/redtow.png");
         towType=QIcon(":/new/redtow.png");
->>>>>>> dev
         type="red";
     }
     else {
         tow.load(":/new/bluetow.png");
-<<<<<<< HEAD
-=======
         towType=QIcon(":/new/bluetow.png");
->>>>>>> dev
         type="blue";
     }
     setPosition();
