@@ -17,18 +17,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     base.cpp \
+    coin.cpp \
     enemy.cpp \
     event.cpp \
     init.cpp \
     main.cpp \
     mainwindow.cpp \
+    manage.cpp \
+    manageenemy.cpp \
     map.cpp \
     tower.cpp
 
 HEADERS += \
     base.h \
+    coin.h \
     enemy.h \
     mainwindow.h \
+    manageenemy.h \
     map.h \
     tower.h
 

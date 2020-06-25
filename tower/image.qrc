@@ -21,5 +21,7 @@
         <file>start.png</file>
         <file>xiaobing.png</file>
         <file>base0.png</file>
+        <file>chaojibing.png</file>
+        <file>victory.png</file>
     </qresource>
 </RCC>

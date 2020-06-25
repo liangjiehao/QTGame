@@ -18,12 +18,14 @@ void map::mousePressEvent(QMouseEvent * e){
 
     if (allowDeploy && TOWER_NUM >=1){
 
-        if (checkOverlap(e->x(),e->y())){
-            tower _tow(this,e->x(),e->y(),setPower,setRange);
+        if (checkOverlap(e->x(),e->y()) && COIN.check_coin(currentTowerCost)){
+            tower _tow(this,e->x(),e->y(),setPower,setRange,currentTowerType);
             defenceTower.push_back(_tow);
-            //defenceTower.back().func();
+            //qDebug()<<defenceTower.size();
+            //buyTower();
+            COIN.consumecoin(currentTowerCost);
             QPainter qp(this);
-            _tow.paint(qp);
+            //_tow.paint(qp);
             //defenceTower.back();
             countDeployedTower();
             towerControl="";
@@ -44,12 +46,19 @@ void map::mousePressEvent(QMouseEvent * e){
 
 void map::timerEvent(QTimerEvent * e){
     //Q_UNUSED(e);
-
-        if (gameover() || home._base<=0){
+            //qDebug()<<home._base;
+        if (gameover()){
+            victory.show();
             killTimer(timeID);
             killTimer(timeID1);
             isactive=false;
             //qDebug()<<timeID<<" killed";
+        }
+        else if (home._base<=0){
+            defeat.show();
+            killTimer(timeID);
+            killTimer(timeID1);
+            isactive=false;
         }
         else {
             if (e->timerId()==timeID){
@@ -61,9 +70,10 @@ void map::timerEvent(QTimerEvent * e){
                 //npcAttack();
             }
             npcAttack();
-
+            //qDebug()<<npc.size();
             repaint();
         }
+        //qDebug()<<npc.size();
 
 
 }
@@ -71,7 +81,6 @@ void map::timerEvent(QTimerEvent * e){
 void map::paintEvent(QPaintEvent * e){
     Q_UNUSED(e);
     QPainter qp(this);
-
     if (pageControl == "main"){
         drawBackGround(qp,BG);
     }
@@ -83,12 +92,13 @@ void map::paintEvent(QPaintEvent * e){
     }
     else {
         drawBackGround(qp,BG);
+        COIN.show(qp);
         home.paint(qp);
         npcPaint(qp);
         towerPaint(qp);
     }
-
-    if (towerControl=="showTowerRange"){
+    npcAward();
+    if (towerControl == "showTowerRange"){
         showTowerRange(qp);
     }
 

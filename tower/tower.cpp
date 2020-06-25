@@ -5,19 +5,23 @@
 #include <QWidget>
 #include <QSize>
 #include <QObject>
+#include "map.h"
+#include <QPropertyAnimation>
 
-tower::tower(QWidget * parent,int x,int y,int _power,int _range)
-    :towParent(parent),range(_range),power(_power),x(x),y(y){
+tower::tower(QWidget * parent,int x,int y,int _power,int _range,QString type)
+    :towParent(parent),type(type),range(_range),power(_power),x(x),y(y){
     //qDebug()<<"old tower position:"<<x<<' '<<y<<endl;
-    if (range>=300){
+    if (this->type=="red"){
         tow.load(":/new/redtow.png");
         towType=QIcon(":/new/redtow.png");
-        type="red";
     }
-    else {
+    else if (this->type=="blue"){
         tow.load(":/new/bluetow.png");
         towType=QIcon(":/new/bluetow.png");
-        type="blue";
+    }
+    else{
+        tow.load(":/new/xiaobing.png");
+        towType=QIcon(":/new/xiaobing.png");
     }
     setPosition();
     //qDebug()<<"icon size:"<<towType.actualSize(QSize(100,200)).width()<<' '
@@ -35,12 +39,17 @@ tower::tower(const tower & T):QPushButton(),towParent(T.towParent),range(T.range
     tow=T.tow;
     type=T.type;
     towType=T.towType;
+    singleMode=T.singleMode;
     setParent(towParent);
     setIcon(towType);
     setIconSize(towType.actualSize(QSize(100,200)));
     move(x,y);
     func();
     //qDebug()<<"copy tower position:"<<this->x<<' '<<this->y<<endl;
+}
+
+void tower::setSingleMode(){
+    singleMode=true;
 }
 
 void tower::operator=(const tower & T){
@@ -52,6 +61,7 @@ void tower::operator=(const tower & T){
     power=T.power;
     x=T.x;
     y=T.y;
+    singleMode=T.singleMode;
     setParent(towParent);
     setIcon(towType);
     setIconSize(towType.actualSize(QSize(100,200)));
@@ -61,7 +71,9 @@ void tower::operator=(const tower & T){
 }
 
 void tower::func(){
-    connect(this,&QPushButton::clicked,this,&tower::updateTowerFun);
+    connect(this,&QPushButton::clicked,this,&tower::towerFunc);
+    connect(&updateTower,&QPushButton::clicked,this,&tower::updateTowerFun);
+    connect(&deleteTower,&QPushButton::clicked,this,&tower::deleteTowerFun);
 }
 
 void tower::setPosition(){
@@ -74,27 +86,44 @@ bool tower::checkEnemy(enemy & npc){
 }
 
 void tower::attack(QVector <enemy> & npc){
-    for (int i=0;i<=npc.size()-1;i++){
-        if (checkEnemy(npc[i])){
+    QPropertyAnimation *testAnimation = new QPropertyAnimation(this,"pos");
+    testAnimation->setDuration(10000);
+    testAnimation->setStartValue(QPoint(300,300));
+    testAnimation->setEndValue(QPoint(800,800));
+    testAnimation->start();
 
-            QTime time = QTime::currentTime();
-            qsrand(time.msec()+time.second()*1000);
-            //qsrand(13);
-            //int m=0;
-            int n = power;
-            if (type=="blue"){
-                n+=(qrand() % 20);
+    if (type=="single"){
+        for (int i=0;i<=npc.size()-1;i++){
+            if (checkEnemy(npc[i]) && !npc[i].dead()){
+                npc[i].damage(power);
+                break;
             }
-
-            if ((qrand() % 67 )==1 && type=="red"){
-                n=npc[i].life;
-            }
-
-           npc[i].damage(n);
-           //qDebug()<<power<<endl;
         }
-
     }
+    else {
+        for (int i=0;i<=npc.size()-1;i++){
+            if (checkEnemy(npc[i])){
+
+                QTime time = QTime::currentTime();
+                qsrand(time.msec()+time.second()*1000);
+                //qsrand(13);
+                //int m=0;
+                int n = power;
+                if (type=="blue"){
+                    n+=(qrand() % 20);
+                }
+
+                if ((qrand() % 67 )==1 && type=="red"){
+                    n=npc[i].life;
+                }
+
+               npc[i].damage(n);
+               //qDebug()<<power<<endl;
+            }
+
+        }
+    }
+
 
 }
 
@@ -111,19 +140,28 @@ void tower::paint(QPainter &qp,QVector<enemy>&npc){
     QPushButton::show();
 
     QPen pen;
-    pen.setColor(type);
+    if (type=="single"){
+        pen.setColor("green");
+    }
+    else{
+        pen.setColor(type);
+    }
+
     pen.setWidthF(2);
     qp.setPen(pen);
     //qp.drawLine(100,100,200,200);
     for (int i=0;i<=npc.size()-1;i++){
         if (checkEnemy(npc[i]) && !npc[i].dead()){
            //qDebug()<<"tower attack position:"<<x<<' '<<y<<endl;
-           qp.drawLine(npc[i].x+20,npc[i].y+20,x+11,y+2);
-
+           qp.drawLine(npc[i].x+npc[i].getWidth()/2,npc[i].y+npc[i].getHeight()/2,x+11,y+2);
+           if (type=="single"){
+               break;
+           }
         }
 
     }
 }
+
 /*
 void tower::paintEvent(QPaintEvent * e){
     QPainter qp(towParent);
@@ -146,25 +184,39 @@ void tower::showDeployRange(QPainter & qp,int range){
     //qDebug()<<"painted!!!";
 }
 
-void tower::updateTowerFun(){
+void tower::towerFunc(){
     if (funcControl){
         updateTower.setParent(towParent);
         updateTower.move(x+50,y);
         updateTower.setText("update");
         updateTower.show();
+
+        deleteTower.setParent(towParent);
+        deleteTower.move(x+50,y+50);
+        deleteTower.setText("delete");
+        deleteTower.show();
+
         funcControl=false;
     }
     else {
         updateTower.hide();
+        deleteTower.hide();
         funcControl=true;
     }
+}
 
-    qDebug()<<"update";
+void tower::updateTowerFun(){
+    this->power *= 2;
+    this->range += 100;
+    map* mappt=dynamic_cast<map*>(towParent);
+    mappt->COIN.consumecoin(50);
+    mappt->update();
+    //qDebug()<<"update";
 }
 
 void tower::deleteTowerFun(){
-    deleteTower.setParent(towParent);
-    deleteTower.move(x+50,y+50);
-    deleteTower.setText("delete");
-    deleteTower.show();
+    map* mappt=dynamic_cast<map*>(towParent);
+    deletedMark=true;
+    mappt->deleteTower();
+    mappt->update();
 }

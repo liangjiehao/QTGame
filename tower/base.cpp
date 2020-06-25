@@ -2,6 +2,9 @@
 #include "base.h"
 #include <QPainter>
 #include <QFont>
+#include <QDebug>
+
+
 base::base(int base):_base(base){
     homebase.load(":/new/base0.png");
     x=400;
@@ -9,7 +12,8 @@ base::base(int base):_base(base){
 }
 
 void base::beAttacked(enemy &npc){
-    _base-=(npc.life/2);
+    //qDebug()<<npc.life;
+    _base-=(npc.attack_amount());
 }
 
 void base::paint(QPainter & qp){
