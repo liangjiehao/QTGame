@@ -22,6 +22,28 @@
         <file>xiaobing.png</file>
         <file>base0.png</file>
         <file>chaojibing.png</file>
+        <file>hasaki.png</file>
+        <file>rider.png</file>
+        <file>coin.png</file>
+        <file>defeat.png</file>
+        <file>fast1.png</file>
+        <file>fast2.png</file>
         <file>victory.png</file>
+        <file>recycle.png</file>
+        <file>backgroundnew.png</file>
+        <file>chaojibing1.png</file>
+        <file>diana.png</file>
+        <file>zhaoxin.png</file>
+        <file>homebase.png</file>
+        <file>yasuo.png</file>
+        <file>yasuo1.png</file>
+        <file>delete.png</file>
+        <file>update.png</file>
+        <file>recycle1.png</file>
+        <file>victory1.png</file>
+        <file>defeat1.png</file>
+        <file>defeat2.png</file>
+        <file>victory2.png</file>
+        <file>BGRule2.png</file>
     </qresource>
 </RCC>

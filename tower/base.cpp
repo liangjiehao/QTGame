@@ -3,35 +3,45 @@
 #include <QPainter>
 #include <QFont>
 #include <QDebug>
+#include <QIcon>
 
 
-base::base(int base):_base(base){
-    homebase.load(":/new/base0.png");
-    x=400;
-    y=550;
+base::base(int base,QWidget * pt):_base(base){
+    x=1010;
+    y=950;
+    homebase.setIcon(QIcon(":/new/homebase.png"));
+    homebase.setIconSize(QSize(70,70));
+    homebase.move(80,120);
+    homebase.setParent(pt);
+    homebase.hide();
+
 }
 
 void base::beAttacked(enemy &npc){
-    //qDebug()<<npc.life;
+    //qDebug()<<npc.attack_amount();
     _base-=(npc.attack_amount());
 }
 
 void base::paint(QPainter & qp){
-    qp.drawImage(x,y,homebase);
+    //qp.drawImage(x-homebase.width()/2+24,y-homebase.height()/2,homebase);
+    //qp.drawImage(80,130,homebase);
+    homebase.show();
     QFont F;
-    F.setPointSize(20);
+    F.setPointSize(30);
+    F.setBold(true);
+    F.setFamily("Helvetica");
     QPointF p;
-    p.setX(x+15);
-    p.setY(y+150);
+    p.setX(170);
+    p.setY(180);
     if (_base>0){
         if (_base<2000){
             qp.setPen("red");
         }
         else{
-            qp.setPen("green");
+            qp.setPen("white");
         }
         qp.setFont(F);
-        qp.drawText(p,QString::number(_base));
+        qp.drawText(p,"BASE:"+QString::number(_base));
     }
 
 }

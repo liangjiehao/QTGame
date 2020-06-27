@@ -47,31 +47,52 @@ void map::mousePressEvent(QMouseEvent * e){
 void map::timerEvent(QTimerEvent * e){
     //Q_UNUSED(e);
             //qDebug()<<home._base;
-        if (gameover()){
-            victory.show();
+        if (gameover() && home._base>0){
+            victory.raise();
+            QTimer::singleShot(800,&victory,&QPushButton::show);
+            //victory.show();
+            reStart.hide();
+            deployTower.hide();
+            deployTowerHigh.hide();
+            deployTowerhasaki.hide();
+            startButton.hide();
+            recycle.hide();
+
+
             killTimer(timeID);
             killTimer(timeID1);
             isactive=false;
             //qDebug()<<timeID<<" killed";
         }
         else if (home._base<=0){
-            defeat.show();
+            defeat.raise();
+            QTimer::singleShot(800,&defeat,&QPushButton::show);
+            //defeat.show();
+            reStart.hide();
+            deployTower.hide();
+            deployTowerHigh.hide();
+            deployTowerhasaki.hide();
+            startButton.hide();
+            recycle.hide();
+
             killTimer(timeID);
             killTimer(timeID1);
             isactive=false;
         }
         else {
             if (e->timerId()==timeID){
-                npcMove();
+                npcMove(defenceTower);
 
             }
             if (e->timerId()==timeID1){
                 towerAttack();
+                //npcAward();
                 //npcAttack();
             }
             npcAttack();
             //qDebug()<<npc.size();
-            repaint();
+            //repaint();
+            update();
         }
         //qDebug()<<npc.size();
 
@@ -97,7 +118,6 @@ void map::paintEvent(QPaintEvent * e){
         npcPaint(qp);
         towerPaint(qp);
     }
-    npcAward();
     if (towerControl == "showTowerRange"){
         showTowerRange(qp);
     }

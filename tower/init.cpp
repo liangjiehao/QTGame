@@ -25,6 +25,8 @@ void map::initMain(){
     evil.hide();
     victory.hide();
     defeat.hide();
+    recycle.hide();
+    coin_num.hide();
 
     enterGame.show();
     showRule.show();
@@ -49,7 +51,7 @@ void map::setButton(){
     QIcon bckicon(":/new/back.png");
     backTo.setIcon(bckicon);
     backTo.setIconSize(btsize);
-    backTo.move(1600,750);
+    backTo.move(1650,800);
     backTo.setParent(this);
 
     btsize.setWidth(300);
@@ -77,13 +79,15 @@ void map::setButton(){
     QIcon rsticon(":/new/restart.png");
     reStart.setIcon(rsticon);
     reStart.setIconSize(btsize);
-    reStart.move(1650,100);
+    //reStart.move(1650,100);
+    reStart.move(1620,480);
     reStart.setParent(this);
 
     QIcon srticon(":/new/start.png");
     startButton.setIcon(srticon);
     startButton.setIconSize(btsize);
-    startButton.move(1650,200);
+    //startButton.move(1650,200);
+    startButton.move(1760,480);
     startButton.setParent(this);
 
     btsize.setWidth(100);
@@ -91,54 +95,169 @@ void map::setButton(){
     QIcon redicon(":/new/redtowic.png");
     deployTowerHigh.setIcon(redicon);
     deployTowerHigh.setIconSize(btsize);
-    deployTowerHigh.move(1650,300);
+    deployTowerHigh.move(1620,80);
     deployTowerHigh.setParent(this);
 
     QIcon bleicon(":/new/bluetowic.png");
     deployTower.setIcon(bleicon);
     deployTower.setIconSize(btsize);
-    deployTower.move(1650,500);
+    deployTower.move(1750,62);
     deployTower.setParent(this);
 
-    QIcon ysoicon(":/new/xiaobing.png");
+    QIcon ysoicon(":/new/yasuo1.png");
     deployTowerhasaki.setIcon(ysoicon);
-    deployTowerhasaki.setIconSize(QSize(100,100));
-    deployTowerhasaki.move(1650,700);
+    deployTowerhasaki.setIconSize(QSize(200,200));
+    deployTowerhasaki.move(1620,280);
     deployTowerhasaki.setParent(this);
 
-    QIcon vicicon(":/new/victory.png");
+    QIcon vicicon(":/new/victory2.png");
     victory.setIcon(vicicon);
-    victory.setIconSize(QSize(800,300));
-    victory.move(400,350);
+    victory.setIconSize(QSize(1500,700));
+    victory.move(200,150);
     victory.setParent(this);
 
-    QIcon deficon(":/new/defeat.png");
+    QIcon deficon(":/new/defeat2.png");
     defeat.setIcon(deficon);
-    defeat.setIconSize(QSize(800,300));
-    defeat.move(400,350);
+    defeat.setIconSize(QSize(1500,700));
+    defeat.move(200,150);
     defeat.setParent(this);
+
+    QIcon recicon(":/new/recycle1.png");
+    recycle.setIcon(recicon);
+    recycle.setIconSize(QSize(150,150));
+    recycle.move(1670,670);
+    recycle.setParent(this);
+
+    QIcon coiicon(":/new/coin.png");
+    coin_num.setIcon(coiicon);
+    coin_num.setIconSize(QSize(90,90));
+    coin_num.move(70,190);
+    coin_num.setParent(this);
+
 }
 
+void map::backToMain(){
+    restart();
+    initMain();
+}
+
+void map::displayRule(){
+    pageControl="rule";
+    BG=":/new/BGRule2.png";
+
+    startButton.hide();
+    deployTower.hide();
+    deployTowerHigh.hide();
+    deployTowerhasaki.hide();
+    reStart.hide();
+    easy.hide();
+    hard.hide();
+    evil.hide();
+    enterGame.hide();
+    showRule.hide();
+    victory.hide();
+    defeat.hide();
+    recycle.hide();
+    coin_num.hide();
+
+    backTo.show();
+    repaint();
+    //setMedia(1);
+}
+
+void map::selectChapter(){
+    pageControl = "selectChapter";
+    BG = ":/new/BGChapter.png";
+
+    startButton.hide();
+    deployTower.hide();
+    deployTowerHigh.hide();
+    deployTowerhasaki.hide();
+    reStart.hide();
+    enterGame.hide();
+    showRule.hide();
+    victory.hide();
+    defeat.hide();
+    recycle.hide();
+    coin_num.hide();
+
+    backTo.show();
+    easy.show();
+    hard.show();
+    evil.show();
+
+    repaint();
+}
+
+
+
+void map::restart(){
+    if (isactive){
+        killTimer(timeID);
+        killTimer(timeID1);
+        isactive=false;
+    }
+    startButton.show();
+    deployTower.show();
+    deployTowerHigh.show();
+    deployTowerhasaki.show();
+    reStart.show();
+    recycle.show();
+    reset();
+    update();
+}
+
+void map::reset(){
+    while(!npc.isEmpty()){
+        npc.pop_back();
+    }
+    if (pageControl == "evil" ){
+        home.reset(20000);
+    }
+    else if (pageControl == "hard"){
+        home.reset(12000);
+    }
+    else home.reset(); //base reset
+    //isactive=true;
+    while(!defenceTower.isEmpty()){
+        defenceTower.pop_back();
+        TOWER_NUM++;
+    }
+
+    allowDeploy=false;
+    COIN.reset();
+    victory.hide();
+    defeat.hide();
+    home.hide();
+    setCursor(Qt::ArrowCursor);
+}
+
+
+
 void map::initenemy(){
+    if (easyWave[COUNT_WAVE]==-1){
+        return;
+    }
     if (pageControl == "easy"){
         waveManage.generate_wave(wave,easyWave[COUNT_WAVE]);
 
     }
     else if (pageControl == "hard"){
-
+        waveManage.generate_wave(wave,hardWave[COUNT_WAVE]);
     }
     else {
-
+        waveManage.generate_wave(wave,evilWave[COUNT_WAVE]);
     }
 
 
     //qDebug()<<life;
-    int temp=npc.size();
+    //int temp=npc.size();
     for (int i=0;i<=wave.size()-1;i++){
+        assert(wave[i].size()==4);
         enemy _npc(wave[i][0],wave[i][1],wave[i][2],wave[i][3]);
         npc.push_back(_npc);
     }
-    /*
+/*
     for (int i=temp;i<=npc.size()-1;i++){
             npc[i].x-=(80*i);
     }*/
@@ -153,6 +272,7 @@ void map::init(){
 
         if (!isactive){
             isactive=true;
+            COUNT_WAVE=0;
             //initenemy();
             /*
             test.setIcon(QIcon(":/new/xiaobing.png"));
@@ -172,7 +292,7 @@ void map::init(){
             */
             waveControl();
             timeID=startTimer(DELAY);
-            timeID1=startTimer(3*DELAY);
+            timeID1=startTimer(5*DELAY);
 
 
         }
@@ -182,7 +302,7 @@ void map::init(){
 void map::waveControl(){
     if (COUNT_WAVE<waveManage.WAVE_NUM){
         initenemy();
-        qDebug()<<"shot!";
+        //qDebug()<<"shot!";
         COUNT_WAVE++;
         QTimer::singleShot(waveManage.WAVE_GAP,this,&map::waveControl);
     }
@@ -196,7 +316,7 @@ void map::initEasy(){
         isactive=false;
 
         pageControl = "easy";
-        BG=":/new/BGEasy.png";
+        BG=":/new/backgroundnew.png";
 
         easy.hide();
         hard.hide();
@@ -210,6 +330,8 @@ void map::initEasy(){
         deployTowerHigh.show();
         deployTowerhasaki.show();
         reStart.show();
+        recycle.show();
+        coin_num.show();
 
         home.reset();
 
@@ -220,7 +342,7 @@ void map::initEasy(){
         testAnimation->setEndValue(QPoint(800,800));
         testAnimation->start();
 */
-        waveManage.wave_mode("easy");
+        waveManage.wave_mode("easy",easyWave.size());
         repaint();
     }
 
@@ -230,7 +352,7 @@ void map::initHard(){
         isactive=false;
 
         pageControl = "hard";
-        BG=":/new/BGHard.png";
+        BG=":/new/backgroundnew.png";
 
         easy.hide();
         hard.hide();
@@ -244,7 +366,10 @@ void map::initHard(){
         deployTowerHigh.show();
         deployTowerhasaki.show();
         reStart.show();
+        recycle.show();
+        coin_num.show();
 
+        waveManage.wave_mode("hard",hardWave.size());
         home.reset(12000);
         repaint();
     }
@@ -255,7 +380,7 @@ void map::initEvil(){
         isactive =false;
 
         pageControl = "evil";
-        BG=":/new/BGEvil.png";
+        BG=":/new/backgroundnew.png";
 
         easy.hide();
         hard.hide();
@@ -269,7 +394,10 @@ void map::initEvil(){
         deployTowerHigh.show();
         deployTowerhasaki.show();
         reStart.show();
+        recycle.show();
+        coin_num.show();
 
+        waveManage.wave_mode("evil",evilWave.size());
         home.reset(20000);
         repaint();
 }

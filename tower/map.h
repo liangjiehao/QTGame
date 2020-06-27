@@ -10,6 +10,8 @@
 #include "base.h"
 #include "coin.h"
 #include "manageenemy.h"
+#include <QtMultimedia/qmediaplayer.h>
+#include <QtMultimedia/qmediaplaylist.h>
 
 class tower;
 class map : public QWidget{
@@ -17,7 +19,7 @@ public:
     map(QWidget *parent = 0);
     void start();
     bool gameover();
-    void npcMove();
+    void npcMove(QVector <tower>&);
     void npcPaint(QPainter & qp);
     void towerAttack();
     void towerPaint(QPainter & qp);
@@ -33,7 +35,10 @@ public:
     void buyTower();
     void npcAward();
     void deleteTower();
-
+    void setMedia(int num=1);
+    void initMedia();
+    QMediaPlaylist * playlist;
+    QMediaPlayer * player;
     base home;
     QString BG;
     QString pageControl,towerControl;
@@ -53,6 +58,7 @@ public slots:
         void backToMain();
         void setButton();
         void initenemy();
+        void resetCursor();
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -70,9 +76,11 @@ private:
     QPushButton showRule;
     QPushButton backTo;
     QPushButton easy,hard,evil;
+    QPushButton recycle;
     QString currentTowerType;
     QPushButton defeat,victory;
-    static const int DELAY = 200;
+    QPushButton coin_num;
+    static const int DELAY = 140;
     static const int B_WIDTH = 1920;
     static const int B_HEIGHT = 1080;
     static const int LEN = 1000;
@@ -96,7 +104,28 @@ private:
     enemy test;
     manageenemy waveManage;
     QVector<QVector<int> > wave;
-    QVector<int> easyWave={0,0};//同步修改wave_num
+    QVector<int> easyWave={
+        0,0,0,0,0,0,0,
+        -1,-1,1,0,0,0,
+        -1,-1,1,0,0,0,1
+    };
+    QVector<int> hardWave={
+        1,1,0,0,0,0,0,0,0,
+        -1,-1,1,1,0,0,
+        -1,-1,1,1,2,0,0,0,
+        -1,-1,1,1,2,2,0,0,
+        -1,-1,3,1,1,1,0,0
+    };
+    QVector<int> evilWave={
+        1,1,1,1,0,0,0,0,
+        -1,-1,3,1,3,1,3,0,0,
+        2,3,2,1,1,1,0,0,0,1,
+        -1,-1,3,3,3,2,2,0,0,
+        -1,3,2,2,3,3,0,0,0,
+        1,1,1,1,1,0,3,3,0,
+        0,0,0,0,0
+
+    };//同步修改wave_num
 };
 
 #endif // MAP_H

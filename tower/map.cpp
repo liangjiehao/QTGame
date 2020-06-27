@@ -9,9 +9,12 @@
 #include <QIcon>
 #include <QSize>
 
-map::map(QWidget * parent):QWidget(parent),COIN(){
+
+map::map(QWidget * parent):QWidget(parent),home(8000,this),COIN(){
     setStyleSheet("background-color:rgba(0,0,0,0)");
     resize(B_WIDTH, B_HEIGHT);
+
+    initMedia();
 
     setButton();
 
@@ -20,6 +23,27 @@ map::map(QWidget * parent):QWidget(parent),COIN(){
     update();
 }
 
+
+void map::initMedia(){
+
+    playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/sound/battle.mp3"));
+    playlist->setCurrentIndex(0);
+    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+
+    player=new QMediaPlayer();
+    //connect(player_test, SIGNAL(positionChanged(qint64)), SLOT(positionChanged(qint64)));
+    player->setPlaylist(playlist);
+    player->setVolume(15);
+    player->play();
+}
+
+void map::setMedia(int num){
+    player->stop();
+    playlist->setCurrentIndex(num);
+    player->setVolume(1);
+    player->play();
+}
 
 
 void map::start(){
@@ -36,91 +60,9 @@ void map::start(){
     connect(&startButton,&QPushButton::clicked,this,&map::init);
     connect(&victory,&QPushButton::clicked,this,&map::restart);
     connect(&defeat,&QPushButton::clicked,this,&map::restart);
+    connect(&recycle,&QPushButton::clicked,this,&map::resetCursor);
 }
 
-void map::backToMain(){
-    restart();
-    initMain();
-}
-
-void map::displayRule(){
-    pageControl="rule";
-    BG=":/new/BGRule.png";
-
-    startButton.hide();
-    deployTower.hide();
-    deployTowerHigh.hide();
-    deployTowerhasaki.hide();
-    reStart.hide();
-    easy.hide();
-    hard.hide();
-    evil.hide();
-    enterGame.hide();
-    showRule.hide();
-    victory.hide();
-    defeat.hide();
-
-    backTo.show();
-    repaint();
-}
-
-void map::selectChapter(){
-    pageControl = "selectChapter";
-    BG = ":/new/BGChapter.png";
-
-    startButton.hide();
-    deployTower.hide();
-    deployTowerHigh.hide();
-    deployTowerhasaki.hide();
-    reStart.hide();
-    enterGame.hide();
-    showRule.hide();
-    victory.hide();
-    defeat.hide();
-
-    backTo.show();
-    easy.show();
-    hard.show();
-    evil.show();
-
-    repaint();
-}
-
-
-
-void map::restart(){
-    if (isactive){
-        killTimer(timeID);
-        killTimer(timeID1);
-        isactive=false;
-    }
-    reset();
-    update();
-}
-
-void map::reset(){
-    while(!npc.isEmpty()){
-        npc.pop_back();
-    }
-    if (pageControl == "evil" ){
-        home.reset(20000);
-    }
-    else if (pageControl == "hard"){
-        home.reset(12000);
-    }
-    else home.reset(); //base reset
-    //isactive=true;
-    while(!defenceTower.isEmpty()){
-        defenceTower.pop_back();
-        TOWER_NUM++;
-    }
-    COUNT_WAVE=0;
-    allowDeploy=false;
-    COIN.reset();
-    victory.hide();
-    defeat.hide();
-    setCursor(Qt::ArrowCursor);
-}
 
 void map::deploy(){
     //qDebug()<<"tower deployed!"<<endl;
@@ -142,11 +84,11 @@ void map::deploy_high(){
     setCursor(QPixmap(":/new/redtow.png"));
     towerControl="showTowerRange";
     currentTowerType="red";
-    currentTowerCost=70;
+    currentTowerCost=75;
     update();
     allowDeploy=true;
     setPower=100;
-    setRange=400;
+    setRange=300;
     if (pageControl == "evil"){
         setPower = 200;
     }
@@ -154,16 +96,18 @@ void map::deploy_high(){
 
 void map::deploy_hasaki(){
     //qDebug()<<"tower deployed!"<<endl;
-    setCursor(QPixmap(":/new/xiaobing.png"));
+    QPixmap temp(":/new/yasuo.png");
+
+    setCursor(temp.scaled(120,120,Qt::KeepAspectRatio));
     towerControl="showTowerRange";
     currentTowerType="single";
     currentTowerCost=100;
     update();
     allowDeploy=true;
-    setPower=1000;
+    setPower=800;
     setRange=400;
     if (pageControl == "evil"){
-        setPower = 4000;
+        setPower = 1500;
     }
 }
 
@@ -193,9 +137,15 @@ bool map::checkOverlap(int x,int y){
     return true;
 }
 
-void map::npcMove(){
+void map::npcMove(QVector <tower>& T){
     for (int i=0;i<=npc.size()-1;i++){
-        npc[i].move();
+        if (npc[i].isAI()){
+            npc[i].move(T);
+        }
+        else {
+            npc[i].move();
+        }
+
     }
 }
 
@@ -220,6 +170,7 @@ void map::towerPaint(QPainter & qp){
 void map::npcAttack(){
     for (int i=0;i<=npc.size()-1;i++){
         if (npc[i].dead() && npc[i].life>0){
+            //qDebug()<<npc[i].life<<i;
             home.beAttacked(npc[i]);
             npc[i].life=0;
         }
@@ -228,8 +179,8 @@ void map::npcAttack(){
 
 void map::npcAward(){
     for (int i=0;i<=npc.size()-1;i++){
-        if (npc[i].dead()){
-            COIN.addcoin(5);
+        if (npc[i].isKilled){
+            COIN.addcoin(npc[i].award);
             npc.remove(i);
             i--;
         }
@@ -251,4 +202,11 @@ void map::deleteTower(){
             i--;
         }
     }
+}
+
+void map::resetCursor(){
+    setCursor(Qt::ArrowCursor);
+    allowDeploy=false;
+    towerControl="";
+    update();
 }
