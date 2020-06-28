@@ -14,51 +14,52 @@
 #include <QtMultimedia/qmediaplaylist.h>
 
 class tower;
-class map : public QWidget{
+class map : public QWidget
+{
 public:
     map(QWidget *parent = 0);
     void start();
     bool gameover();
-    void npcMove(QVector <tower>&);
-    void npcPaint(QPainter & qp);
+    void npcMove(QVector<tower> &);
+    void npcPaint(QPainter &qp);
     void towerAttack();
-    void towerPaint(QPainter & qp);
+    void towerPaint(QPainter &qp);
     bool isactive = false;
     void countDeployedTower();
     void npcAttack();
     void reset();
-    void drawBackGround(QPainter & qp,QString map);
-    bool checkOverlap(int,int);
+    void drawBackGround(QPainter &qp, QString map);
+    bool checkOverlap(int, int);
     void initMain();
     void showTowerRange(QPainter &);
     void waveControl();
     void buyTower();
     void npcAward();
     void deleteTower();
-    void setMedia(int num=1);
+    void setMedia(int num = 1);
     void initMedia();
-    QMediaPlaylist * playlist;
-    QMediaPlayer * player;
+    QMediaPlaylist *playlist;
+    QMediaPlayer *player;
     base home;
     QString BG;
-    QString pageControl,towerControl;
+    QString pageControl, towerControl;
     coin COIN;
 
 public slots:
-        void init();
-        void initEasy();
-        void initHard();
-        void initEvil();
-        void deploy();
-        void deploy_high();
-        void deploy_hasaki();
-        void restart();
-        void displayRule();
-        void selectChapter();
-        void backToMain();
-        void setButton();
-        void initenemy();
-        void resetCursor();
+    void init();
+    void initEasy();
+    void initHard();
+    void initEvil();
+    void deploy();
+    void deploy_high();
+    void deploy_hasaki();
+    void restart();
+    void displayRule();
+    void selectChapter();
+    void backToMain();
+    void setButton();
+    void initenemy();
+    void resetCursor();
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -75,17 +76,17 @@ private:
     QPushButton enterGame;
     QPushButton showRule;
     QPushButton backTo;
-    QPushButton easy,hard,evil;
+    QPushButton easy, hard, evil;
     QPushButton recycle;
     QString currentTowerType;
-    QPushButton defeat,victory;
+    QPushButton defeat, victory;
     QPushButton coin_num;
     static const int DELAY = 140;
     static const int B_WIDTH = 1920;
     static const int B_HEIGHT = 1080;
     static const int LEN = 1000;
-    static const int OVERLAP =150;
-    //int ENEMY_NUM = 20;
+    static const int OVERLAP = 150;
+
     int TOWER_NUM = 5;
     int COUNT_WAVE = 0;
 
@@ -94,38 +95,33 @@ private:
     int y;
     int count;
     int step;
-    int timeID;
-    int timeID1;
+    int timeID = 0;
+    int timeID1 = 0;
     bool allowDeploy;
     int setPower;
     int setRange;
-    QVector <enemy> npc;
-    QVector <tower> defenceTower;
+    QVector<enemy> npc;
+    QVector<tower> defenceTower;
     enemy test;
     manageenemy waveManage;
-    QVector<QVector<int> > wave;
-    QVector<int> easyWave={
-        0,0,0,0,0,0,0,
-        -1,-1,1,0,0,0,
-        -1,-1,1,0,0,0,1
-    };
-    QVector<int> hardWave={
-        1,1,0,0,0,0,0,0,0,
-        -1,-1,1,1,0,0,
-        -1,-1,1,1,2,0,0,0,
-        -1,-1,1,1,2,2,0,0,
-        -1,-1,3,1,1,1,0,0
-    };
-    QVector<int> evilWave={
-        1,1,1,1,0,0,0,0,
-        -1,-1,3,1,3,1,3,0,0,
-        2,3,2,1,1,1,0,0,0,1,
-        -1,-1,3,3,3,2,2,0,0,
-        -1,3,2,2,3,3,0,0,0,
-        1,1,1,1,1,0,3,3,0,
-        0,0,0,0,0
+    QVector<QVector<int>> wave;
+    QVector<int> easyWave = {
+        0, 0, 0, 0, 0, 0, 0,
+        -1, -1, 1, 1, 0, 0, 0,
+        -1, -1, 1, 1, 0, 0, 0, 1, 2};
+    QVector<int> hardWave = {
+        1, 1, 0, 0, 0, 0, 0, 0, 0, -1, -1, 1, 2, 1,
+        0, 0, -1, -1, 1, 1, 2, 0, 0, 3, 3, 3, 0, -1, -1, 1,
+        1, 2, 2, 2, 2, 0, 0
 
-    };//同步修改wave_num
+    };
+    QVector<int> evilWave = {
+        0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 3,
+        3, 2, -1, -1, 1, 3, 2, 2, 1, 3, 0, 0, 0, 0,
+        0, 2, 3, 2, 1, 1, 1, 3, 3, 3, 3, 3, 0, 0, 0, 1,
+        -1, -1, 3, 2, 3, 3, 2, 3, 3, 3, 2, 0, 0
+
+    };
 };
 
 #endif // MAP_H

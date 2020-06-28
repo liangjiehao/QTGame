@@ -6,10 +6,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     map my;
-    //QPushButton tower("开始",&my);
 
     my.start();
     my.show();
-    //enemy::connect(&tower,SIGNAL(clicked),&my,SLOT(init));
+
     return a.exec();
 }
