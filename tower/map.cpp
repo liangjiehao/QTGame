@@ -14,7 +14,7 @@ map::map(QWidget *parent) : QWidget(parent), home(8000, this), COIN()
     setStyleSheet("background-color:rgba(0,0,0,0)");
     resize(B_WIDTH, B_HEIGHT);
 
-    initMedia();
+    //initMedia();
 
     setButton();
 
@@ -26,24 +26,17 @@ map::map(QWidget *parent) : QWidget(parent), home(8000, this), COIN()
 void map::initMedia()
 {
 
-    playlist = new QMediaPlaylist();
+    QMediaPlaylist *playlist = new QMediaPlaylist();
     playlist->addMedia(QUrl("qrc:/sound/battle.mp3"));
     playlist->setCurrentIndex(0);
-    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-
-    player = new QMediaPlayer();
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    playlist->setCurrentIndex(0);
+    QMediaPlayer *player = new QMediaPlayer();
 
     player->setPlaylist(playlist);
-    player->setVolume(15);
-    player->play();
-}
-
-void map::setMedia(int num)
-{
-    player->stop();
-    playlist->setCurrentIndex(num);
     player->setVolume(1);
     player->play();
+
 }
 
 void map::start()

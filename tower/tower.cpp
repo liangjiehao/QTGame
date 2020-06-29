@@ -51,6 +51,9 @@ tower::tower(QWidget *parent, int x, int y, int _power, int _range, QString type
     deleteTower.setIcon(QIcon(":/new/delete.png"));
     deleteTower.setParent(towParent);
 
+    QTime time = QTime::currentTime();
+    qsrand(time.msec() + time.second() * 1000);
+
     func();
 }
 
@@ -182,8 +185,6 @@ void tower::attack(QVector<enemy> &npc)
             if (!npc[i].dead() && checkEnemy(npc[i]))
             {
 
-                QTime time = QTime::currentTime();
-                qsrand(time.msec() + time.second() * 1000);
 
                 int n = power;
                 bool ignore_defence = false;

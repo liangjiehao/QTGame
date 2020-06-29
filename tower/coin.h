@@ -16,7 +16,7 @@ public:
     bool check_coin(int num=0){return COIN_NUM>=num ? true : false;};
 private:
     int COIN_NUM=200;
-    static const int ORIGIN_COIN=200;
+    static const int ORIGIN_COIN=1000;
     QPoint pos;
 };
 

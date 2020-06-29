@@ -36,10 +36,7 @@ public:
     void buyTower();
     void npcAward();
     void deleteTower();
-    void setMedia(int num = 1);
     void initMedia();
-    QMediaPlaylist *playlist;
-    QMediaPlayer *player;
     base home;
     QString BG;
     QString pageControl, towerControl;
@@ -105,21 +102,28 @@ private:
     enemy test;
     manageenemy waveManage;
     QVector<QVector<int>> wave;
-    QVector<int> easyWave = {
+    QVector<int> easyWave = {1,-1,-1,1,-1,-1,1
+        /*
         0, 0, 0, 0, 0, 0, 0,
         -1, -1, 1, 1, 0, 0, 0,
-        -1, -1, 1, 1, 0, 0, 0, 1, 2};
-    QVector<int> hardWave = {
+        -1, -1, 1, 1, 0, 0, 0, 1, 2
+            */
+    };
+    QVector<int> hardWave = {2,-1,-1,-1,2,-1,-1,-1,2,2,2
+        /*
         1, 1, 0, 0, 0, 0, 0, 0, 0, -1, -1, 1, 2, 1,
         0, 0, -1, -1, 1, 1, 2, 0, 0, 3, 3, 3, 0, -1, -1, 1,
         1, 2, 2, 2, 2, 0, 0
+            */
 
     };
-    QVector<int> evilWave = {
+    QVector<int> evilWave = {3,-1,3,-1,3,-1,3,-1,3,-1,3,-1,3,-1,3,3
+        /*
         0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 3,
         3, 2, -1, -1, 1, 3, 2, 2, 1, 3, 0, 0, 0, 0,
         0, 2, 3, 2, 1, 1, 1, 3, 3, 3, 3, 3, 0, 0, 0, 1,
         -1, -1, 3, 2, 3, 3, 2, 3, 3, 3, 2, 0, 0
+            */
 
     };
 };
